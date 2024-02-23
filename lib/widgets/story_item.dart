@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 
 class StoryListItem extends StatefulWidget {
   final ListStory story;
+  final Function(String) onTapped;
 
-  const StoryListItem({Key? key, required this.story}) : super(key: key);
+  const StoryListItem({Key? key, required this.story, required this.onTapped})
+      : super(key: key);
 
   @override
   State<StoryListItem> createState() => _StoryListItemState();
@@ -49,7 +51,7 @@ class _StoryListItemState extends State<StoryListItem> {
                         )],
                         radius: 18,
                         child: Text(
-                          widget.story.name[0].toUpperCase(),
+                          widget.story.name![0].toUpperCase(),
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
                                     color: AppColor.white,
@@ -61,7 +63,7 @@ class _StoryListItemState extends State<StoryListItem> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        widget.story.name,
+                        widget.story.name!,
                         style:
                             Theme.of(context).textTheme.titleMedium!.copyWith(
                                   color: AppColor.white,
@@ -82,8 +84,7 @@ class _StoryListItemState extends State<StoryListItem> {
                     onSelected: (value) {
                       switch (value) {
                         case 'details':
-                          // Navigator.pushReplacementNamed(
-                          //     context, AppRoute.getStarted);
+                          widget.onTapped(widget.story.id!);
                           break;
                       }
                     },
@@ -100,14 +101,15 @@ class _StoryListItemState extends State<StoryListItem> {
                 ],
               ),
             ),
+            const SizedBox(height: 4),
             ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(8.0)),
               child: FadeInImage.assetNetwork(
                 placeholder: 'assets/images/loading.gif',
-                image: widget.story.photoUrl,
+                image: widget.story.photoUrl!,
                 fadeOutDuration: const Duration(seconds: 2),
                 fadeInDuration: const Duration(seconds: 2),
+                height: 300,
+                fit: BoxFit.fitWidth,
               ),
             ),
             Padding(
@@ -117,7 +119,7 @@ class _StoryListItemState extends State<StoryListItem> {
                 children: [
                   const SizedBox(height: 8.0),
                   Text(
-                    widget.story.description,
+                    widget.story.description!,
                     maxLines: _expanded ? null : 1,
                     overflow: _expanded ? null : TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -128,7 +130,7 @@ class _StoryListItemState extends State<StoryListItem> {
                   ),
                   const SizedBox(height: 8.0),
                   // Tampilkan "Read more" hanya jika deskripsi tidak sepenuhnya diperpanjang
-                  if (widget.story.description.length > 20)
+                  if (widget.story.description!.length > 20)
                     GestureDetector(
                       onTap: () {
                         setState(() {
@@ -140,9 +142,8 @@ class _StoryListItemState extends State<StoryListItem> {
                         style: const TextStyle(color: AppColor.blue),
                       ),
                     ),
-                  const SizedBox(height: 8.0),
                   Text(
-                    'Created At: $formattedTime',
+                    'Created at: $formattedTime',
                     style: const TextStyle(fontSize: 14.0, color: Colors.grey),
                   ),
                 ],

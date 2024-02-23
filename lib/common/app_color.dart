@@ -8,4 +8,5 @@ class AppColor {
   static const background = Color(0xff121212);
   static const white = Color(0xffFFFFFF);
   static const black = Color(0xff000000);
+  static const alertColor = Color(0xffED6363);
 }

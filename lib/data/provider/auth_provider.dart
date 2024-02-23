@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flype/data/api/auth_service.dart';
 import 'package:flype/data/db/auth_repository.dart';
 import 'package:flype/data/model/user_model.dart';
+import 'package:logger/logger.dart';
 
-class AuthProvider extends ChangeNotifier {
+class AuthProvider with ChangeNotifier {
   final AuthRepository authRepository;
-
   AuthProvider(this.authRepository);
 
   bool isLoadingLogin = false;
@@ -12,17 +13,75 @@ class AuthProvider extends ChangeNotifier {
   bool isLoadingRegister = false;
   bool isLoggedIn = false;
 
-  Future<bool> login(User user) async {
+  final Logger logger = Logger();
+  late UserModel _user = UserModel();
+  UserModel get user => _user;
+
+  set user(UserModel user) {
+    _user = user;
+    notifyListeners();
+  }
+
+  // Login
+  Future<bool> login({
+    required String email,
+    required String password,
+  }) async {
     isLoadingLogin = true;
     notifyListeners();
-    final userState = await authRepository.getUser();
-    if (user == userState) {
-      await authRepository.login();
+
+    try {
+      final UserModel user = await AuthServices().login(
+        email: email,
+        password: password,
+      );
+      if (user.token != null && user.token!.isNotEmpty) {
+        // Simpan status login dan informasi pengguna ke SharedPreferences
+        await authRepository.login();
+        await authRepository.saveUser(user);
+
+        _user = user;
+        notifyListeners();
+        return true;
+      } else {
+        logger.e('Token is empty after login.');
+        return false;
+      }
+    } catch (e) {
+      logger.e('Error login user: $e');
+      return false;
+    } finally {
+      isLoadingLogin = false;
+      notifyListeners();
     }
-    isLoggedIn = await authRepository.isLoggedIn();
-    isLoadingLogin = false;
+  }
+
+  // register
+  Future<bool> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    isLoadingRegister = true;
     notifyListeners();
-    return isLoggedIn;
+
+    try {
+      AuthModel authModel = await AuthServices().register(
+        name: name,
+        email: email,
+        password: password,
+      );
+
+      _user = authModel.loginResult;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      logger.e('Error registering user: $e');
+      return false;
+    } finally {
+      isLoadingLogin = false;
+      notifyListeners();
+    }
   }
 
   Future<bool> logout() async {
@@ -36,14 +95,5 @@ class AuthProvider extends ChangeNotifier {
     isLoadingLogout = false;
     notifyListeners();
     return !isLoggedIn;
-  }
-
-  Future<bool> saveUser(User user) async {
-    isLoadingRegister = true;
-    notifyListeners();
-    final userState = await authRepository.saveUser(user);
-    isLoadingRegister = false;
-    notifyListeners();
-    return userState;
   }
 }

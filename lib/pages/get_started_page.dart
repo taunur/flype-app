@@ -4,7 +4,7 @@ import 'package:flype/common/app_color.dart';
 import 'package:flype/pages/login_page.dart';
 import 'package:flype/widgets/button_custom.dart';
 import 'package:flype/widgets/footer_custom.dart';
-import 'package:flype/widgets/navbar.dart';
+// import 'package:flype/widgets/navbar.dart';
 import 'package:flype/widgets/title_custom.dart';
 
 class GetStartedPage extends StatelessWidget {
@@ -60,11 +60,11 @@ class GetStartedPage extends StatelessWidget {
                   children: [
                     FooterCustom(
                       onSignUp: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const Navbar(),
-                          ),
-                        );
+                        // Navigator.of(context).push(
+                        //   MaterialPageRoute(
+                        //     builder: (context) => const Navbar(),
+                        //   ),
+                        // );
                       },
                       label: "Want See Our FLYPE?",
                       labelTap: "Guest",

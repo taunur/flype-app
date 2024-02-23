@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flype/data/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -5,7 +6,6 @@ class AuthRepository {
   final String stateKey = "state";
   final String userKey = "user";
 
-  // /method untuk menyimpan dan memeriksa sesi login.
   Future<bool> isLoggedIn() async {
     final preferences = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 2));
@@ -24,29 +24,46 @@ class AuthRepository {
     return preferences.setBool(stateKey, false);
   }
 
-  /// Anda perlu menyimpan informasi pengguna saat melakukan registrasi akun. 
-  Future<bool> saveUser(User user) async {
+  Future<bool> saveUser(UserModel user) async {
     final preferences = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 2));
-    return preferences.setString(userKey, user.toJson());
+    final userJsonString = jsonEncode(user.toJson());
+    preferences.setString(userKey, userJsonString);
+    preferences.setString("token", user.token.toString());
+    return true;
   }
 
   Future<bool> deleteUser() async {
     final preferences = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 2));
-    return preferences.setString(userKey, "");
+    preferences.remove(userKey); // Menghapus data pengguna dari penyimpanan
+    preferences.remove("token"); // Menghapus token dari penyimpanan
+    return true;
   }
 
-  Future<User?> getUser() async {
+  Future<UserModel?> getUser() async {
     final preferences = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 2));
-    final json = preferences.getString(userKey) ?? "";
-    User? user;
+
+    final jsonString = preferences.getString(userKey) ?? "";
+    UserModel? user;
     try {
-      user = User.fromJson(json);
+      final json = jsonDecode(jsonString);
+      user = UserModel.fromJson(json);
     } catch (e) {
       user = null;
     }
     return user;
+  }
+
+  Future<String?> getToken() async {
+    final preferences = await SharedPreferences.getInstance();
+    return preferences.getString("token");
+  }
+
+  Future<bool> saveToken(String token) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString("token", token);
+    return true;
   }
 }

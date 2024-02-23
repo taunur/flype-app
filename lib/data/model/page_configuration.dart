@@ -2,50 +2,50 @@ class PageConfiguration {
   final bool unknown;
   final bool register;
   final bool? loggedIn;
-  final String? quoteId;
+  final String? storyId;
 
-  PageConfiguration.getStarted()
+  PageConfiguration.splash()
       : unknown = false,
         register = false,
         loggedIn = null,
-        quoteId = null;
+        storyId = null;
 
   PageConfiguration.login()
       : unknown = false,
         register = false,
         loggedIn = false,
-        quoteId = null;
+        storyId = null;
 
   PageConfiguration.register()
       : unknown = false,
         register = true,
         loggedIn = false,
-        quoteId = null;
+        storyId = null;
 
   PageConfiguration.home()
       : unknown = false,
         register = false,
         loggedIn = true,
-        quoteId = null;
+        storyId = null;
 
   PageConfiguration.detailQuote(String id)
       : unknown = false,
         register = false,
         loggedIn = true,
-        quoteId = id;
+        storyId = id;
 
   PageConfiguration.unknown()
       : unknown = true,
         register = false,
         loggedIn = null,
-        quoteId = null;
+        storyId = null;
 
-  bool get isGetStartedPage => unknown == false && loggedIn == null;
+  bool get isSplashPage => unknown == false && loggedIn == null;
   bool get isLoginPage => unknown == false && loggedIn == false;
   bool get isHomePage =>
-      unknown == false && loggedIn == true && quoteId == null;
+      unknown == false && loggedIn == true && storyId == null;
   bool get isDetailPage =>
-      unknown == false && loggedIn == true && quoteId != null;
+      unknown == false && loggedIn == true && storyId != null;
   bool get isRegisterPage => register == true;
   bool get isUnknownPage => unknown == true;
 }

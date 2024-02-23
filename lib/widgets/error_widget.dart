@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flype/common/app_fonts.dart';
 
 class ErrorMessageWidget extends StatelessWidget {
   final String message;
@@ -14,6 +15,7 @@ class ErrorMessageWidget extends StatelessWidget {
           child: Text(
             message,
             textAlign: TextAlign.center,
+            style: whiteTextstyle,
           ),
         ),
       ),

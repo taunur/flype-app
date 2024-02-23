@@ -1,46 +1,61 @@
 import 'dart:convert';
 
-class User {
+AuthModel userModelFromJson(String str) => AuthModel.fromJson(json.decode(str));
+
+String userModelToJson(AuthModel data) => json.encode(data.toJson());
+
+class AuthModel {
+  bool error;
+  String message;
+  UserModel loginResult;
+
+  AuthModel({
+    required this.error,
+    required this.message,
+    required this.loginResult,
+  });
+
+  factory AuthModel.fromJson(Map<String, dynamic> json) => AuthModel(
+        error: json["error"],
+        message: json["message"],
+        loginResult: UserModel.fromJson(json["loginResult"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "error": error,
+        "message": message,
+        "loginResult": loginResult.toJson(),
+      };
+}
+
+class UserModel {
+  String? userId;
   String? name;
   String? email;
   String? password;
+  String? token;
 
-  User({
+  UserModel({
+    this.userId,
     this.name,
     this.email,
     this.password,
+    this.token,
   });
 
-  @override
-  String toString() => 'User(name: $name, email: $email, password: $password)';
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        userId: json["userId"],
+        name: json["name"],
+        email: json["email"],
+        password: json["password"],
+        token: json["token"],
+      );
 
-  /// Tambahkan beberapa method agar objek User mampu mengembalikan data Map ataupun JSON.
-  Map<String, dynamic> toMap() {
-    return {
-      'name' : name,
-      'email': email,
-      'password': password,
-    };
-  }
-
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(
-      name: map['name'],
-      email: map['email'],
-      password: map['password'],
-    );
-  }
-  String toJson() => json.encode(toMap());
-  factory User.fromJson(String source) => User.fromMap(json.decode(source));
-
-  /// tambahkan juga method hashCode dan operator equal. Dengan begitu, objek User mampu dibandingkan dengan objek User lainnya.
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is User && other.email == email && other.password == password;
-  }
-
-  @override
-  int get hashCode => Object.hash(email, password);
+  Map<String, dynamic> toJson() => {
+        "userId": userId,
+        "name": name,
+        "email": email,
+        "password": password,
+        "token": token,
+      };
 }

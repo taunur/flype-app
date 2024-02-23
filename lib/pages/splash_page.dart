@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_assets.dart';
 import 'package:flype/common/app_color.dart';
 import 'package:flype/common/app_fonts.dart';
-import 'package:flype/pages/get_started_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -14,21 +11,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    /// time auto navigator
-    Timer(
-      const Duration(seconds: 3),
-      () {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const GetStartedPage()),
-          (route) => false,
-        );
-      },
-    );
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
