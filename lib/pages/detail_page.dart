@@ -79,7 +79,7 @@ class _DetailPageState extends State<DetailPage> {
 
 /// Detail Content
 Widget _buildDetails(BuildContext context, DetailStory detailStory) {
-  final formatter = DateFormat('hh:mm a dd, MMMM yyyy', 'id_ID')
+  final formatter = DateFormat('hh:mm a, dd MMMM yyyy', 'id_ID')
       .format(detailStory.createdAt!);
 
   return Container(
