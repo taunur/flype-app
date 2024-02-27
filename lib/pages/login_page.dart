@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: AppColor.background,
         body: Stack(
           children: [
-            // Background Image
+            /// Background Image
             Positioned.fill(
               child: Image.asset(
                 AppAsset.background,
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
 
-            // Layout utama menggunakan Column
+            /// Layout utama menggunakan Column
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

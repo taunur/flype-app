@@ -7,11 +7,11 @@ import 'package:logger/logger.dart';
 
 class DetailStoryProvider extends ChangeNotifier {
   final Logger logger = Logger();
-  late String _token; // Token pengguna
+  late String _token; 
 
   final AuthRepository _authRepository = AuthRepository();
 
-  // Metode untuk menyetel token saat login
+  /// Metode untuk menyetel token saat login
   void setToken(String token) {
     _token = token;
     notifyListeners();
@@ -33,7 +33,7 @@ class DetailStoryProvider extends ChangeNotifier {
       _message = '';
       notifyListeners();
 
-      // Mengambil token dari AuthRepository
+      /// Mengambil token dari AuthRepository
       _token = (await _authRepository.getToken())!;
       _detailStory =
           await StoryServices().getDetailStory(id: id, token: _token);

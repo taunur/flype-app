@@ -29,7 +29,7 @@ Widget _buildList(BuildContext context) {
   final themeProvider = Provider.of<ThemeProvider>(context);
   final authWatch = context.watch<AuthProvider>();
 
-  ///Theme toggle
+  /// Theme toggle
   return ListView(
     children: [
       Material(

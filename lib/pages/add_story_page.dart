@@ -1,6 +1,5 @@
 import 'dart:io';
 
-// import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_color.dart';
@@ -15,8 +14,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddStoryPage extends StatefulWidget {
-  // final Function onSend;
-
   const AddStoryPage({
     super.key,
   });
@@ -99,18 +96,18 @@ class _AddStoryPageState extends State<AddStoryPage> {
                       hintText: AppLocalizations.of(context)!.description,
                       border: const OutlineInputBorder(),
                       contentPadding: const EdgeInsets.all(
-                          16), // Padding di dalam TextField
+                          16), 
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
                           color: AppColor.darkerBlack,
-                        ), // Warna bingkai saat tidak aktif
-                        borderRadius: BorderRadius.circular(8), // Sudut bingkai
+                        ), 
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
                           color: AppColor.blue,
-                        ), // Warna bingkai saat aktif
-                        borderRadius: BorderRadius.circular(8), // Sudut bingkai
+                        ), 
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),

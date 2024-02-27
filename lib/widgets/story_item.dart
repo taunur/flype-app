@@ -134,7 +134,7 @@ class _StoryListItemState extends State<StoryListItem> {
                         ),
                   ),
                   const SizedBox(height: 8.0),
-                  // Tampilkan "Read more" hanya jika deskripsi tidak sepenuhnya diperpanjang
+                  /// Tampilkan "Read more" hanya jika deskripsi tidak sepenuhnya diperpanjang
                   if (widget.story.description!.length > 30)
                     GestureDetector(
                       onTap: () {

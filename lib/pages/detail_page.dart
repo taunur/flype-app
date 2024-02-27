@@ -120,7 +120,7 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
           ],
         ),
 
-        // Tampilkan gambar jika photoUrl tidak null
+        /// Tampilkan gambar jika photoUrl tidak null
         Container(
           margin: const EdgeInsets.only(top: 10),
           alignment: Alignment.center,
@@ -131,7 +131,7 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
                   fit: BoxFit.cover,
                 )
               : const SizedBox
-                  .shrink(), // Jika photoUrl null, widget ini tidak akan ditampilkan
+                  .shrink(),
         ),
 
         const SizedBox(height: 24),
@@ -139,7 +139,7 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
         RichText(
           text: TextSpan(
             children: [
-              // Nama
+              /// Nama
               TextSpan(
                 text: detailStory.name ?? '',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -147,9 +147,9 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
                       fontSize: 16,
                     ),
               ),
-              // Spasi antara nama dan deskripsi
+              /// Spasi antara nama dan deskripsi
               const TextSpan(text: ' '),
-              // Deskripsi
+              /// Deskripsi
               TextSpan(
                 text: detailStory.description ?? '',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -163,14 +163,14 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
 
         const SizedBox(height: 6),
 
-        // Tampilkan tanggal pembuatan
+        /// Tampilkan tanggal pembuatan
         Text(
           '${AppLocalizations.of(context)!.createdAt} $formatter',
         ),
 
         const SizedBox(height: 6),
 
-        // Tampilkan lokasi (latitude dan longitude)
+        /// Tampilkan lokasi (latitude dan longitude)
         Text(
           '${AppLocalizations.of(context)!.location} ${detailStory.lat ?? ''}, ${detailStory.lon ?? ''}',
         ),

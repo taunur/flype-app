@@ -41,7 +41,7 @@ final GoRouter goRouter = GoRouter(
         final authRepository = AuthRepository();
         final loggedIn = await authRepository.isLoggedIn();
         if (loggedIn) {
-          // Redirect ke halaman Navbar jika sudah login
+          /// Redirect ke halaman Navbar jika sudah login
           return '/navBar';
         } else {
           return null;

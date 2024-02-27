@@ -47,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: AppColor.background,
         body: Stack(
           children: [
-            // Background Image
+            /// Background Image
             Positioned.fill(
               child: Image.asset(
                 AppAsset.background,
@@ -55,11 +55,11 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
 
-            // Layout utama menggunakan Column
+            /// Layout utama menggunakan Column
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Widget di atas
+                /// Widget di atas
                 Padding(
                   padding: const EdgeInsets.only(top: 30, left: 24),
                   child: TitleCustom(
@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
 
-                // Widget tengah
+                /// Widget tengah
                 Expanded(
                   child: Center(
                     child: SingleChildScrollView(
@@ -139,7 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
 
-                // Widget di bawah
+                /// Widget di bawah
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 24,

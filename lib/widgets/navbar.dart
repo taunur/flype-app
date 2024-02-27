@@ -21,7 +21,7 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     PageProvider pageProvider = Provider.of<PageProvider>(context);
 
-    // addStory
+    /// addStory
     Widget addStoryButton() {
       return FloatingActionButton(
         onPressed: () {
@@ -36,7 +36,7 @@ class _NavbarState extends State<Navbar> {
       );
     }
 
-    // bottom Nav
+    /// bottom Nav
     Widget customBottomNav() {
       return ClipRRect(
         borderRadius: const BorderRadius.vertical(
@@ -109,7 +109,7 @@ class _NavbarState extends State<Navbar> {
       );
     }
 
-    // body
+    /// body
     Widget bodyMain() {
       switch (pageProvider.currentIndex) {
         case 0:

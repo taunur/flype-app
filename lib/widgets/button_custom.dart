@@ -80,7 +80,7 @@ class OutButtonCustom extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: AppColor.blue, 
-                  width: 2, // Set border width
+                  width: 2, 
                 ),
                 borderRadius: BorderRadius.circular(20),
               ),

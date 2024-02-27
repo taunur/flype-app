@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// todo 14: create unknown page
 class UnknownScreen extends StatelessWidget {
   const UnknownScreen({
     Key? key,
