@@ -3,16 +3,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_color.dart';
 import 'package:flype/common/app_fonts.dart';
+import 'package:flype/common/export.dart';
 import 'package:flype/data/model/list_story_model.dart';
 import 'package:flype/data/provider/datetime_provider.dart';
+import 'package:flype/routes/config_go_router.dart';
 import 'package:provider/provider.dart';
 
 class StoryListItem extends StatefulWidget {
   final ListStory story;
-  final Function(String) onTapped;
 
-  const StoryListItem({Key? key, required this.story, required this.onTapped})
-      : super(key: key);
+  const StoryListItem({
+    Key? key,
+    required this.story,
+  }) : super(key: key);
 
   @override
   State<StoryListItem> createState() => _StoryListItemState();
@@ -31,8 +34,15 @@ class _StoryListItemState extends State<StoryListItem> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.background,
           borderRadius: BorderRadius.circular(16.0),
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.black.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -52,12 +62,13 @@ class _StoryListItemState extends State<StoryListItem> {
                         radius: 18,
                         child: Text(
                           widget.story.name![0].toUpperCase(),
-                          style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: AppColor.white,
-                                    fontWeight: regular,
-                                    fontSize: 16,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(
+                                fontWeight: regular,
+                                fontSize: 16,
+                              ),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -66,7 +77,6 @@ class _StoryListItemState extends State<StoryListItem> {
                         widget.story.name!,
                         style:
                             Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  color: AppColor.white,
                                   fontWeight: regular,
                                   fontSize: 16,
                                 ),
@@ -77,24 +87,20 @@ class _StoryListItemState extends State<StoryListItem> {
                     padding: const EdgeInsets.all(0),
                     icon: const Icon(
                       Icons.more_vert,
-                      color: AppColor.white,
                     ),
-                    color: AppColor.background,
                     offset: const Offset(0, 50),
                     onSelected: (value) {
                       switch (value) {
                         case 'details':
-                          widget.onTapped(widget.story.id!);
+                          goRouter.go("/navBar/stories/${widget.story.id}");
                           break;
                       }
                     },
                     itemBuilder: (BuildContext context) => [
-                      const PopupMenuItem<String>(
+                      PopupMenuItem<String>(
                         value: 'details',
-                        child: Text(
-                          'Detail Story',
-                          style: TextStyle(color: AppColor.white),
-                        ),
+                        child:
+                            Text(AppLocalizations.of(context)!.detailStory),
                       ),
                     ],
                   ),
@@ -123,14 +129,13 @@ class _StoryListItemState extends State<StoryListItem> {
                     maxLines: _expanded ? null : 1,
                     overflow: _expanded ? null : TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: AppColor.white,
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
                         ),
                   ),
                   const SizedBox(height: 8.0),
                   // Tampilkan "Read more" hanya jika deskripsi tidak sepenuhnya diperpanjang
-                  if (widget.story.description!.length > 20)
+                  if (widget.story.description!.length > 30)
                     GestureDetector(
                       onTap: () {
                         setState(() {
@@ -139,12 +144,11 @@ class _StoryListItemState extends State<StoryListItem> {
                       },
                       child: Text(
                         _expanded ? 'Show less' : 'Read more',
-                        style: const TextStyle(color: AppColor.blue),
+                        style: const TextStyle(color: AppColor.variantBlue),
                       ),
                     ),
                   Text(
-                    'Created at: $formattedTime',
-                    style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                    '${AppLocalizations.of(context)!.createdAt} $formattedTime',
                   ),
                 ],
               ),

@@ -36,8 +36,8 @@ class AuthRepository {
   Future<bool> deleteUser() async {
     final preferences = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 2));
-    preferences.remove(userKey); // Menghapus data pengguna dari penyimpanan
-    preferences.remove("token"); // Menghapus token dari penyimpanan
+    preferences.remove(userKey);
+    preferences.remove("token");
     return true;
   }
 
@@ -56,14 +56,14 @@ class AuthRepository {
     return user;
   }
 
-  Future<String?> getToken() async {
-    final preferences = await SharedPreferences.getInstance();
-    return preferences.getString("token");
-  }
-
   Future<bool> saveToken(String token) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.setString("token", token);
     return true;
+  }
+
+  Future<String?> getToken() async {
+    final preferences = await SharedPreferences.getInstance();
+    return preferences.getString("token");
   }
 }

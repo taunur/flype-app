@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_assets.dart';
 import 'package:flype/common/app_color.dart';
-import 'package:flype/pages/login_page.dart';
+import 'package:flype/common/export.dart';
 import 'package:flype/widgets/button_custom.dart';
-import 'package:flype/widgets/footer_custom.dart';
-// import 'package:flype/widgets/navbar.dart';
 import 'package:flype/widgets/title_custom.dart';
+import 'package:go_router/go_router.dart';
 
 class GetStartedPage extends StatelessWidget {
   const GetStartedPage({Key? key}) : super(key: key);
@@ -17,7 +16,7 @@ class GetStartedPage extends StatelessWidget {
         backgroundColor: AppColor.background,
         body: Stack(
           children: [
-            // Background Image
+            /// Background Image
             Positioned.fill(
               child: Image.asset(
                 AppAsset.background,
@@ -25,17 +24,17 @@ class GetStartedPage extends StatelessWidget {
               ),
             ),
 
-            // Judul
-            const Padding(
-              padding:
-                  EdgeInsets.only(top: 30, left: 24, bottom: 24, right: 24),
+            /// Judul
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 30, left: 24, bottom: 24, right: 24),
               child: TitleCustom(
-                title: "Best Social App To\nMake New Friends",
-                subtitle: "Find People With The Same\nInsterets As You",
+                title: AppLocalizations.of(context)!.getStartedTitle,
+                subtitle: AppLocalizations.of(context)!.getStartedSub,
               ),
             ),
 
-            // Logo
+            /// Logo
             Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +48,7 @@ class GetStartedPage extends StatelessWidget {
               ),
             ),
 
-            // Tombol
+            /// Tombol
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
@@ -58,35 +57,15 @@ class GetStartedPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    FooterCustom(
-                      onSignUp: () {
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (context) => const Navbar(),
-                        //   ),
-                        // );
-                      },
-                      label: "Want See Our FLYPE?",
-                      labelTap: "Guest",
-                    ),
                     OutButtonCustom(
-                      label: "Login",
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => LoginPage(
-                              onLogin: () {},
-                              onRegister: () {},
-                            ),
-                          ),
-                        );
-                      },
+                      label: AppLocalizations.of(context)!.buttonLogin,
+                      onTap: () => context.go("/login"),
                       isExpanded: true,
                     ),
-                    const SizedBox(height: 16), // Tambahkan jarak antara tombol
+                    const SizedBox(height: 16),
                     FillButtonCustom(
-                      label: "Register",
-                      onTap: () {},
+                      label: AppLocalizations.of(context)!.buttonRegister,
+                      onTap: () => context.go("/register"),
                       isExpanded: true,
                     ),
                   ],

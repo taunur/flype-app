@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_assets.dart';
 import 'package:flype/common/app_color.dart';
+import 'package:flype/common/export.dart';
 import 'package:flype/data/model/user_model.dart';
 import 'package:flype/data/provider/auth_provider.dart';
+import 'package:flype/routes/config_go_router.dart';
 import 'package:flype/widgets/button_custom.dart';
 import 'package:flype/widgets/footer_custom.dart';
 import 'package:flype/widgets/input_custom.dart';
 import 'package:flype/widgets/loading_button.dart';
 import 'package:flype/widgets/title_custom.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function() onLogin;
-  final Function() onRegister;
   const LoginPage({
     Key? key,
-    required this.onLogin,
-    required this.onRegister,
   }) : super(key: key);
 
   @override
@@ -60,12 +59,12 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Widget di atas
-                const Padding(
-                  padding:
-                      EdgeInsets.only(top: 30, left: 24, bottom: 24, right: 24),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 30, left: 24, bottom: 24, right: 24),
                   child: TitleCustom(
-                    title: "Let’s login you in.",
-                    subtitle: "Welcome back.\nYou’ve been missed.",
+                    title: AppLocalizations.of(context)!.loginTitle,
+                    subtitle: AppLocalizations.of(context)!.loginSub,
                   ),
                 ),
 
@@ -84,8 +83,9 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CustomOutlinedTextFormField(
-                                title: "Email",
-                                hintText: "example@gmail.com",
+                                title: AppLocalizations.of(context)!.emailTitle,
+                                hintText: AppLocalizations.of(context)!
+                                    .hintEmailTitle,
                                 iconData: Icons.email,
                                 controller: emailController,
                                 validator: (value) {
@@ -99,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                                 height: 20,
                               ),
                               CustomOutlinedTextFormField(
-                                title: "Password",
+                                title:
+                                    AppLocalizations.of(context)!.passwordTitle,
                                 hintText: "*****",
                                 iconData: Icons.lock,
                                 isPassword: true,
@@ -107,6 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your password.';
+                                  }
+                                  if (value.length < 8) {
+                                    return 'Password must be at least 8 characters long.';
                                   }
                                   return null;
                                 },
@@ -131,14 +135,14 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FooterCustom(
-                        onSignUp: () => widget.onRegister(),
-                        label: "Don’t have an account?",
-                        labelTap: "Register",
+                        onSignUp: () => context.go("/register"),
+                        label: AppLocalizations.of(context)!.footerLogin,
+                        labelTap: AppLocalizations.of(context)!.buttonRegister,
                       ),
                       context.read<AuthProvider>().isLoadingLogin
                           ? const LoadingButton()
                           : FillButtonCustom(
-                              label: "Login",
+                              label: AppLocalizations.of(context)!.buttonLogin,
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   final scaffoldMessenger =
@@ -155,14 +159,23 @@ class _LoginPageState extends State<LoginPage> {
                                     password: user.password!,
                                   );
                                   if (result) {
-                                    widget.onLogin();
+                                    goRouter.go('/navbar');
                                   } else {
-                                    scaffoldMessenger.showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            "Your email or password is invalid"),
-                                      ),
-                                    );
+                                    if (authProvider.authError ==
+                                        'User not found') {
+                                      scaffoldMessenger.showSnackBar(
+                                        const SnackBar(
+                                          content: Text("User not found"),
+                                        ),
+                                      );
+                                    } else {
+                                      scaffoldMessenger.showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              "Your email or password is invalid"),
+                                        ),
+                                      );
+                                    }
                                   }
                                 }
                               },

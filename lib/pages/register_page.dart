@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_assets.dart';
 import 'package:flype/common/app_color.dart';
+import 'package:flype/common/export.dart';
 import 'package:flype/data/model/user_model.dart';
 import 'package:flype/data/provider/auth_provider.dart';
+import 'package:flype/routes/config_go_router.dart';
 import 'package:flype/widgets/button_custom.dart';
 import 'package:flype/widgets/footer_custom.dart';
 import 'package:flype/widgets/input_custom.dart';
 import 'package:flype/widgets/loading_button.dart';
 import 'package:flype/widgets/title_custom.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
-  final Function() onLogin;
-  final Function() onRegister;
   const RegisterPage({
     Key? key,
-    required this.onLogin,
-    required this.onRegister,
   }) : super(key: key);
 
   @override
@@ -61,11 +60,11 @@ class _RegisterPageState extends State<RegisterPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Widget di atas
-                const Padding(
-                  padding: EdgeInsets.only(top: 30, left: 24),
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, left: 24),
                   child: TitleCustom(
-                    title: "Let’s register you in.",
-                    subtitle: "Start your account.\nJoin with us.",
+                    title: AppLocalizations.of(context)!.registerTitle,
+                    subtitle: AppLocalizations.of(context)!.registerSub,
                   ),
                 ),
 
@@ -84,8 +83,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               CustomOutlinedTextFormField(
-                                title: "Name",
-                                hintText: "type your name",
+                                title:
+                                    AppLocalizations.of(context)!.hintInputName,
+                                hintText:
+                                    AppLocalizations.of(context)!.hintInputName,
                                 controller: nameController,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -98,8 +99,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 height: 20,
                               ),
                               CustomOutlinedTextFormField(
-                                title: "Email",
-                                hintText: "example@gmail.com",
+                                title: AppLocalizations.of(context)!.emailTitle,
+                                hintText: AppLocalizations.of(context)!
+                                    .hintEmailTitle,
                                 iconData: Icons.email,
                                 controller: emailController,
                                 validator: (value) {
@@ -113,7 +115,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 height: 20,
                               ),
                               CustomOutlinedTextFormField(
-                                title: "Password",
+                                title:
+                                    AppLocalizations.of(context)!.passwordTitle,
                                 hintText: "*****",
                                 iconData: Icons.lock,
                                 isPassword: true,
@@ -121,6 +124,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter your password.';
+                                  }
+                                  if (value.length < 8) {
+                                    return 'Password must be at least 8 characters long.';
                                   }
                                   return null;
                                 },
@@ -145,14 +151,14 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       FooterCustom(
-                        onSignUp: () => widget.onLogin(),
-                        label: "Already have an account?",
-                        labelTap: "Login",
+                        onSignUp: () => context.go('/login'),
+                        label: AppLocalizations.of(context)!.footerRegister,
+                        labelTap: AppLocalizations.of(context)!.buttonLogin,
                       ),
                       context.read<AuthProvider>().isLoadingRegister
                           ? const LoadingButton()
                           : FillButtonCustom(
-                              label: "Register",
+                              label: AppLocalizations.of(context)!.buttonRegister,
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   final scaffoldMessenger =
@@ -162,23 +168,33 @@ class _RegisterPageState extends State<RegisterPage> {
                                     email: emailController.text,
                                     password: passwordController.text,
                                   );
-                                  final authProvider =
-                                      context.read<AuthProvider>();
-
                                   final result = await authProvider.register(
                                     name: user.name!,
                                     email: user.email!,
                                     password: user.password!,
                                   );
                                   if (result) {
-                                    widget.onRegister();
+                                    return goRouter.go('/login');
                                   } else {
-                                    scaffoldMessenger.showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            "Your name or email or password is invalid"),
-                                      ),
-                                    );
+                                    final registerError =
+                                        authProvider.authError;
+                                    if (registerError != null &&
+                                        registerError.contains(
+                                            'Email is already taken')) {
+                                      scaffoldMessenger.showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text("Email is already taken"),
+                                        ),
+                                      );
+                                    } else {
+                                      scaffoldMessenger.showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              "Failed to register, please try again later."),
+                                        ),
+                                      );
+                                    }
                                   }
                                 }
                               },

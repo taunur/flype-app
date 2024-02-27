@@ -7,6 +7,7 @@ import 'package:flype/data/utils/app_constants.dart';
 import 'package:http/http.dart' as http;
 
 class StoryServices {
+  /// GetStory
   Future<List<ListStory>> getAllStory({
     required String token,
   }) async {
@@ -26,6 +27,7 @@ class StoryServices {
     }
   }
 
+  /// Detail
   Future<DetailStoryModel> getDetailStory({
     required String id,
     required String token,

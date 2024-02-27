@@ -6,12 +6,12 @@ class StoryTimeProvider with ChangeNotifier {
   String formatCreatedAt(ListStory story) {
     Duration difference = DateTime.now().difference(story.createdAt!);
     
-    // Jika lebih dari satu hari, tampilkan tanggal dan jam
+    /// Jika lebih dari satu hari, tampilkan tanggal dan jam
     if (difference.inDays > 0) {
-      return DateFormat('dd MMMM yyyy HH:mm', 'id_ID').format(story.createdAt!);
+      return DateFormat('dd MMMM yyyy hh:mm a', 'id_ID').format(story.createdAt!);
     } else {
-      // Jika kurang dari satu hari, tampilkan hanya jam
-      return DateFormat('HH:mm', 'id_ID').format(story.createdAt!);
+      /// Jika kurang dari satu hari, tampilkan hanya jam
+      return DateFormat('hh:mm a', 'id_ID').format(story.createdAt!);
     }
   }
 }

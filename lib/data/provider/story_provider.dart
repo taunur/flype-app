@@ -56,8 +56,6 @@ class StoryProvider extends ChangeNotifier {
     }
   }
 
-  
-
   Future<void> refresh() async {
     await _getStory();
   }
