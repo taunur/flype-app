@@ -61,7 +61,7 @@ class _StoryListItemState extends State<StoryListItem> {
                         )],
                         radius: 18,
                         child: Text(
-                          widget.story.name![0].toUpperCase(),
+                          widget.story.name[0].toUpperCase(),
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!
@@ -74,7 +74,7 @@ class _StoryListItemState extends State<StoryListItem> {
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        widget.story.name!,
+                        widget.story.name,
                         style:
                             Theme.of(context).textTheme.titleMedium!.copyWith(
                                   fontWeight: regular,
@@ -111,7 +111,7 @@ class _StoryListItemState extends State<StoryListItem> {
             ClipRRect(
               child: FadeInImage.assetNetwork(
                 placeholder: 'assets/images/loading.gif',
-                image: widget.story.photoUrl!,
+                image: widget.story.photoUrl,
                 fadeOutDuration: const Duration(seconds: 2),
                 fadeInDuration: const Duration(seconds: 2),
                 height: 300,
@@ -125,7 +125,7 @@ class _StoryListItemState extends State<StoryListItem> {
                 children: [
                   const SizedBox(height: 8.0),
                   Text(
-                    widget.story.description!,
+                    widget.story.description,
                     maxLines: _expanded ? null : 1,
                     overflow: _expanded ? null : TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -135,7 +135,7 @@ class _StoryListItemState extends State<StoryListItem> {
                   ),
                   const SizedBox(height: 8.0),
                   /// Tampilkan "Read more" hanya jika deskripsi tidak sepenuhnya diperpanjang
-                  if (widget.story.description!.length > 30)
+                  if (widget.story.description.length > 30)
                     GestureDetector(
                       onTap: () {
                         setState(() {

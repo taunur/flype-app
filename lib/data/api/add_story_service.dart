@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flype/data/model/upload_response.dart';
 import 'package:flype/data/utils/app_constants.dart';
@@ -39,8 +41,10 @@ class AddStoryService {
     final String responseData = String.fromCharCodes(responseList);
 
     if (statusCode == 201) {
-      final UploadResponse uploadResponse =
-          UploadResponse.fromJson(responseData);
+      final Map<String, dynamic> responseDataMap = json.decode(responseData);
+      final UploadResponse uploadResponse = UploadResponse.fromJson(
+        responseDataMap,
+      );
       return uploadResponse;
     } else {
       throw Exception("Upload file error");

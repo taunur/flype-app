@@ -158,7 +158,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       context.read<AuthProvider>().isLoadingRegister
                           ? const LoadingButton()
                           : FillButtonCustom(
-                              label: AppLocalizations.of(context)!.buttonRegister,
+                              label:
+                                  AppLocalizations.of(context)!.buttonRegister,
                               onTap: () async {
                                 if (formKey.currentState!.validate()) {
                                   final scaffoldMessenger =
@@ -174,6 +175,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                     password: user.password!,
                                   );
                                   if (result) {
+                                    scaffoldMessenger.showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Register Success"),
+                                      ),
+                                    );
                                     return goRouter.go('/login');
                                   } else {
                                     final registerError =

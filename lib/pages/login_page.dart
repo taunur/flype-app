@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Widget di atas
+                /// Widget di atas
                 Padding(
                   padding: const EdgeInsets.only(
                       top: 30, left: 24, bottom: 24, right: 24),
@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                // Widget tengah
+                /// Widget tengah
                 Expanded(
                   child: Center(
                     child: SingleChildScrollView(
@@ -159,6 +159,11 @@ class _LoginPageState extends State<LoginPage> {
                                     password: user.password!,
                                   );
                                   if (result) {
+                                    scaffoldMessenger.showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Login Success"),
+                                      ),
+                                    );
                                     goRouter.go('/navbar');
                                   } else {
                                     if (authProvider.authError ==

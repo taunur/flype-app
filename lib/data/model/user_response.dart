@@ -1,26 +1,19 @@
 
-import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
 
-UserResponse userResponseFromJson(String str) => UserResponse.fromJson(json.decode(str));
+part 'user_response.g.dart';
 
-String userResponseToJson(UserResponse data) => json.encode(data.toJson());
-
+@JsonSerializable()
 class UserResponse {
-    bool error;
-    String message;
+   final bool error;
+   final String message;
 
     UserResponse({
         required this.error,
         required this.message,
     });
 
-    factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
-        error: json["error"],
-        message: json["message"],
-    );
+  factory UserResponse.fromJson(Map<String, dynamic> json) => _$UserResponseFromJson(json);
 
-    Map<String, dynamic> toJson() => {
-        "error": error,
-        "message": message,
-    };
+  Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 }

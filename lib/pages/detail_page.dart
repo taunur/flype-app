@@ -80,7 +80,7 @@ class _DetailPageState extends State<DetailPage> {
 /// Detail Content
 Widget _buildDetails(BuildContext context, DetailStory detailStory) {
   final formatter = DateFormat('hh:mm a, dd MMMM yyyy', 'id_ID')
-      .format(detailStory.createdAt!);
+      .format(detailStory.createdAt);
 
   return Container(
     decoration: const BoxDecoration(
@@ -102,7 +102,7 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
               )],
               radius: 18,
               child: Text(
-                detailStory.name![0].toUpperCase(),
+                detailStory.name[0].toUpperCase(),
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       fontWeight: regular,
                       fontSize: 16,
@@ -111,7 +111,7 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
               ),
             ),
             Text(
-              detailStory.name!,
+              detailStory.name,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                     fontWeight: regular,
                     fontSize: 16,
@@ -124,14 +124,11 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
         Container(
           margin: const EdgeInsets.only(top: 10),
           alignment: Alignment.center,
-          child: detailStory.photoUrl != null
-              ? Image.network(
-                  detailStory.photoUrl!,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                )
-              : const SizedBox
-                  .shrink(),
+          child: Image.network(
+            detailStory.photoUrl, 
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
 
         const SizedBox(height: 24),
@@ -141,17 +138,19 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
             children: [
               /// Nama
               TextSpan(
-                text: detailStory.name ?? '',
+                text: detailStory.name,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       fontWeight: bold,
                       fontSize: 16,
                     ),
               ),
+
               /// Spasi antara nama dan deskripsi
               const TextSpan(text: ' '),
+
               /// Deskripsi
               TextSpan(
-                text: detailStory.description ?? '',
+                text: detailStory.description,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       fontWeight: regular,
                       fontSize: 15,

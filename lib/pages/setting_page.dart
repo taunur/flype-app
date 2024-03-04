@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flype/common/export.dart';
 import 'package:flype/data/provider/auth_provider.dart';
+import 'package:flype/data/provider/page_provider.dart';
 import 'package:flype/data/provider/theme_provider.dart';
 import 'package:flype/routes/config_go_router.dart';
 import 'package:flype/widgets/flag_icon_widget.dart';
@@ -60,6 +61,8 @@ Widget _buildList(BuildContext context) {
               final result = await authRead.logout();
               if (result) {
                 goRouter.replace('/');
+                if (!context.mounted) return;
+                context.read<PageProvider>().currentIndex = 0;
               }
             },
             child: authWatch.isLoadingLogout
