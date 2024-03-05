@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flype/animations/loader_animation.dart';
 import 'package:flype/common/app_fonts.dart';
 import 'package:flype/common/export.dart';
 import 'package:flype/data/model/detail_story_model.dart';
@@ -8,7 +9,7 @@ import 'package:flype/data/provider/auth_provider.dart';
 import 'package:flype/data/provider/detail_story_provider.dart';
 import 'package:flype/data/utils/result_state.dart';
 import 'package:flype/widgets/error_widget.dart';
-import 'package:flype/widgets/loading_widget.dart';
+import 'dart:math' as math;
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,10 @@ class DetailPage extends StatefulWidget {
   State<DetailPage> createState() => _DetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
+  late AnimationController loaderController;
+  late Animation<double> loaderAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +41,21 @@ class _DetailPageState extends State<DetailPage> {
         authToken.toString(),
       );
     });
+    loaderController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    loaderAnimation = Tween(begin: 1.0, end: 1.4).animate(CurvedAnimation(
+      parent: loaderController,
+      curve: Curves.easeIn,
+    ));
+    loaderController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    loaderController.dispose();
+    super.dispose();
   }
 
   @override
@@ -58,7 +77,24 @@ class _DetailPageState extends State<DetailPage> {
         builder: (context, detailStory, child) {
           switch (detailStory.state) {
             case ResultState.loading:
-              return const Loading();
+              return Center(
+                child: AnimatedBuilder(
+                  animation: loaderAnimation,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: loaderController.status == AnimationStatus.forward
+                          ? (math.pi * 2) * loaderController.value
+                          : -(math.pi * 2) * loaderController.value,
+                      child: CustomPaint(
+                        foregroundPainter: LoaderAnimation(
+                          radiusRatio: loaderAnimation.value,
+                        ),
+                        size: const Size(300, 300),
+                      ),
+                    );
+                  },
+                ),
+              );
             case ResultState.hasData:
               return _buildDetails(
                 context,
@@ -125,7 +161,7 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
           margin: const EdgeInsets.only(top: 10),
           alignment: Alignment.center,
           child: Image.network(
-            detailStory.photoUrl, 
+            detailStory.photoUrl,
             width: double.infinity,
             fit: BoxFit.cover,
           ),

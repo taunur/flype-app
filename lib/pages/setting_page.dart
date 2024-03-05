@@ -5,6 +5,7 @@ import 'package:flype/data/provider/page_provider.dart';
 import 'package:flype/data/provider/theme_provider.dart';
 import 'package:flype/routes/config_go_router.dart';
 import 'package:flype/widgets/flag_icon_widget.dart';
+import 'package:flype/widgets/loading_widget.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as math;
 
@@ -66,7 +67,7 @@ Widget _buildList(BuildContext context) {
               }
             },
             child: authWatch.isLoadingLogout
-                ? const CircularProgressIndicator()
+                ? const Loading()
                 : Transform.rotate(
                     angle: math.pi,
                     child: const Icon(

@@ -66,6 +66,7 @@ class _CustomOutlinedTextFormFieldState
           obscureText: widget.isPassword ? _isObscure : false,
           validator: widget.validator,
           onChanged: widget.onChanged,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           style: const TextStyle(color: AppColor.white),
           decoration: InputDecoration(
             suffixIcon: !widget.isPassword

@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 
 class StoryProvider extends ChangeNotifier {
   final Logger logger = Logger();
-  late String _token; 
+  late String _token;
 
   final AuthRepository _authRepository = AuthRepository();
 
@@ -19,7 +19,7 @@ class StoryProvider extends ChangeNotifier {
 
   ResultState _state = ResultState.noData;
 
-  List<ListStory> _allStories = [];
+  final List<ListStory> _allStories = [];
   List<ListStory> get allStories => _allStories;
 
   String _message = '';
@@ -27,17 +27,24 @@ class StoryProvider extends ChangeNotifier {
 
   ResultState get state => _state;
 
-  Future<void> _getStory() async {
+  int? pageItems = 1;
+  int sizeItems = 10;
+
+  Future<void> _getStory({int? page, int? size}) async {
     try {
-      _state = ResultState.loading;
-      _message = '';
-      notifyListeners();
+      if (pageItems == 1) {
+        _state = ResultState.loading;
+        _message = '';
+        notifyListeners();
+      }
 
       /// Mengambil token dari AuthRepository
       _token = (await _authRepository.getToken())!;
 
       final storyResult = await StoryServices().getAllStory(
         token: _token,
+        page: page ?? pageItems,
+        size: size ?? sizeItems,
       );
 
       if (storyResult.isEmpty) {
@@ -45,7 +52,12 @@ class StoryProvider extends ChangeNotifier {
         _message = 'Empty Data';
       } else {
         _state = ResultState.hasData;
-        _allStories = storyResult;
+        _allStories.addAll(storyResult);
+        if (storyResult.length < sizeItems) {
+          pageItems = null;
+        } else {
+          pageItems = (page ?? pageItems)! + 1;
+        }
       }
     } catch (e) {
       _state = ResultState.error;
@@ -57,11 +69,12 @@ class StoryProvider extends ChangeNotifier {
   }
 
   Future<void> refresh() async {
+    _allStories.clear();
+    pageItems = 1;
     await _getStory();
   }
 
   Future<void> getStory(String token) async {
     await _getStory();
   }
-
 }

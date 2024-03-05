@@ -9,9 +9,11 @@ class StoryServices {
   /// GetStory
   Future<List<ListStory>> getAllStory({
     required String token,
+    int? page,
+    int? size,
   }) async {
     final response = await http.get(
-      Uri.parse(AppConstants.getStory),
+      Uri.parse('${AppConstants.getStory}?page=$page&size=$size'),
       headers: <String, String>{
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
