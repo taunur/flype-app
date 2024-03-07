@@ -11,6 +11,8 @@ class AddStoryService {
     List<int> bytes,
     String fileName,
     String description,
+    double? lat,
+    double? lon,
     String token,
   ) async {
     final uri = Uri.parse(AppConstants.addStory);
@@ -24,6 +26,13 @@ class AddStoryService {
     final Map<String, String> fields = {
       "description": description,
     };
+
+    if (lat != null && lon != null) {
+      fields.addAll({
+        "lat": lat.toString(),
+        "lon": lon.toString(),
+      });
+    }
 
     final Map<String, String> headers = {
       "Content-type": "multipart/form-data",
@@ -47,6 +56,8 @@ class AddStoryService {
       );
       return uploadResponse;
     } else {
+      debugPrint("Upload failed with status code: $statusCode");
+      debugPrint("Response data: $responseData");
       throw Exception("Upload file error");
     }
   }

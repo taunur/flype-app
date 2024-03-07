@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flype/data/db/auth_repository.dart';
+import 'package:flype/pages/maps_page.dart';
 import 'package:flype/pages/add_story_page.dart';
 import 'package:flype/pages/detail_page.dart';
 import 'package:flype/pages/get_started_page.dart';
@@ -59,6 +60,14 @@ final GoRouter goRouter = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             return const AddStoryPage();
           },
+          routes: <RouteBase>[
+            GoRoute(
+              path: 'maps',
+              builder: (BuildContext context, GoRouterState state) {
+                return const MapsPage();
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: 'stories/:id',

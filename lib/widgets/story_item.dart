@@ -34,10 +34,11 @@ class _StoryListItemState extends State<StoryListItem> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       child: Container(
         decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16.0),
           boxShadow: [
             BoxShadow(
-              color: AppColor.black.withOpacity(0.5),
+              color: AppColor.secondary.withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
               offset: const Offset(0, 3),

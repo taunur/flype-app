@@ -19,6 +19,8 @@ class UploadProvider extends ChangeNotifier {
     List<int> bytes,
     String fileName,
     String description,
+    double? lat,
+    double? lon,
   ) async {
     try {
       message = "";
@@ -28,7 +30,13 @@ class UploadProvider extends ChangeNotifier {
 
       final String token = await authRepository.getToken() ?? '';
       uploadResponse = await addStoryService.uploadDocument(
-          bytes, fileName, description, token);
+        bytes,
+        fileName,
+        description,
+        lat,
+        lon,
+        token,
+      );
       message = uploadResponse?.message ?? "success";
     } catch (e) {
       message = e.toString();

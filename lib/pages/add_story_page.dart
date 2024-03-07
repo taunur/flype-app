@@ -25,7 +25,6 @@ class AddStoryPage extends StatefulWidget {
 class _AddStoryPageState extends State<AddStoryPage> {
   final TextEditingController descriptionController =
       TextEditingController(text: '');
-
   @override
   void dispose() {
     descriptionController.dispose();
@@ -34,16 +33,13 @@ class _AddStoryPageState extends State<AddStoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedLocationProvider = Provider.of<AddStoryProvider>(context);
+    final selectedLocation = selectedLocationProvider.selectedLocation;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.addStory),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.go('/navBar');
-          },
-        ),
         actions: [
           IconButton(
             onPressed: () => _onClear(),
@@ -54,7 +50,6 @@ class _AddStoryPageState extends State<AddStoryPage> {
       ),
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               flex: 3,
@@ -84,6 +79,15 @@ class _AddStoryPageState extends State<AddStoryPage> {
                 ],
               ),
             ),
+            selectedLocation != null
+                ? ElevatedButton(
+                    onPressed: () => context.go('/navBar/addStory/maps'),
+                    child: Text('$selectedLocation'),
+                  )
+                : ElevatedButton(
+                    onPressed: () => context.go('/navBar/addStory/maps'),
+                    child: Text(AppLocalizations.of(context)!.addLocation),
+                  ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: Column(
@@ -95,18 +99,17 @@ class _AddStoryPageState extends State<AddStoryPage> {
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.description,
                       border: const OutlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(
-                          16), 
+                      contentPadding: const EdgeInsets.all(16),
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
                           color: AppColor.darkerBlack,
-                        ), 
+                        ),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
                           color: AppColor.blue,
-                        ), 
+                        ),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
@@ -132,10 +135,11 @@ class _AddStoryPageState extends State<AddStoryPage> {
     final ScaffoldMessengerState scaffoldMessengerState =
         ScaffoldMessenger.of(context);
     final uploadProvider = context.read<UploadProvider>();
-    final homeProvider = context.read<AddStoryProvider>();
+    final addStoryProvider = context.read<AddStoryProvider>();
+    final latLng = context.read<AddStoryProvider>().selectedLocation;
 
-    final imagePath = homeProvider.imagePath;
-    final imageFile = homeProvider.imageFile;
+    final imagePath = addStoryProvider.imagePath;
+    final imageFile = addStoryProvider.imageFile;
 
     if (imagePath == null || imageFile == null) {
       scaffoldMessengerState.showSnackBar(
@@ -152,19 +156,24 @@ class _AddStoryPageState extends State<AddStoryPage> {
       return;
     }
 
+    double? lat;
+    double? lon;
+
+    if (latLng != null) {
+      lat = latLng.latitude;
+      lon = latLng.longitude;
+    }
+
     final fileName = imageFile.name;
     final bytes = await imageFile.readAsBytes();
     final newBytes = await uploadProvider.compressImage(bytes);
 
-    await uploadProvider.upload(
-      newBytes,
-      fileName,
-      description,
-    );
+    await uploadProvider.upload(newBytes, fileName, description, lat, lon);
 
     if (uploadProvider.uploadResponse != null) {
-      homeProvider.setImageFile(null);
-      homeProvider.setImagePath(null);
+      addStoryProvider.setImageFile(null);
+      addStoryProvider.setImagePath(null);
+      addStoryProvider.setSelectedLocation(null, null);
       descriptionController.clear();
     }
 
