@@ -52,6 +52,9 @@ class StoryProvider extends ChangeNotifier {
         _message = 'Empty Data';
       } else {
         _state = ResultState.hasData;
+        if (pageItems == 1) {
+          _allStories.clear();
+        }
         _allStories.addAll(storyResult);
         if (storyResult.length < sizeItems) {
           pageItems = null;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flype/common/app_assets.dart';
 import 'package:flype/common/app_color.dart';
 import 'package:flype/common/app_fonts.dart';
+import 'package:flype/config/flavor_config.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
     Timer(
       const Duration(seconds: 3),
       () {
-       context.replace("/");
+        context.replace("/");
       },
     );
     super.initState();
@@ -29,6 +30,9 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+
+    /// Flavor
+    FlavorType flavor = FlavorConfig.instance.flavor;
 
     return Scaffold(
       backgroundColor: AppColor.background,
@@ -40,16 +44,28 @@ class _SplashPageState extends State<SplashPage> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 300,
-                  width: 300,
-                  margin: EdgeInsets.only(bottom: screenHeight * 0.01),
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(AppAsset.logo),
+                if (flavor == FlavorType.free)
+                  Container(
+                    height: 300,
+                    width: 300,
+                    margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(AppAsset.logoFree),
+                      ),
+                    ),
+                  )
+                else
+                  Container(
+                    height: 300,
+                    width: 300,
+                    margin: EdgeInsets.only(bottom: screenHeight * 0.01),
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(AppAsset.logo),
+                      ),
                     ),
                   ),
-                ),
                 Padding(
                   padding: EdgeInsets.only(bottom: screenHeight * 0.1),
                   child: Text(

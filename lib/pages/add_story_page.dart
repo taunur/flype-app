@@ -222,7 +222,6 @@ class _AddStoryPageState extends State<AddStoryPage> {
     final uploadProvider = context.read<UploadProvider>();
     final addStoryProvider = context.read<AddStoryProvider>();
     final latLng = context.read<AddStoryProvider>().selectedLocation;
-    final refresh = context.read<StoryProvider>().refresh();
 
     final imagePath = addStoryProvider.imagePath;
     final imageFile = addStoryProvider.imageFile;
@@ -261,10 +260,11 @@ class _AddStoryPageState extends State<AddStoryPage> {
       addStoryProvider.setImagePath(null);
       addStoryProvider.selectedLocation = null;
       descriptionController.clear();
-      goRouter.replace('/navBar'); 
-      refresh;
+      goRouter.replace('/navBar');
+      setState(() {
+        context.read<StoryProvider>().refresh();
+      });
     }
-
     scaffoldMessengerState.showSnackBar(
       SnackBar(content: Text(uploadProvider.message)),
     );

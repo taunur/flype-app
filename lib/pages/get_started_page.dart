@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_assets.dart';
 import 'package:flype/common/app_color.dart';
+import 'package:flype/common/app_fonts.dart';
 import 'package:flype/common/export.dart';
 import 'package:flype/widgets/button_custom.dart';
 import 'package:flype/widgets/title_custom.dart';
@@ -11,6 +12,7 @@ class GetStartedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColor.background,
@@ -57,6 +59,15 @@ class GetStartedPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Text(
+                      'FlypeApp',
+                      style: whiteTextstyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: medium,
+                        letterSpacing: 5,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     OutButtonCustom(
                       label: AppLocalizations.of(context)!.buttonLogin,
                       onTap: () => context.go("/login"),
