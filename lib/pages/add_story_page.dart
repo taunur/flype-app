@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_color.dart';
 import 'package:flype/common/export.dart';
+import 'package:flype/config/flavor_config.dart';
 import 'package:flype/data/provider/add_story_provider.dart';
+import 'package:flype/data/provider/story_provider.dart';
 import 'package:flype/data/provider/upload_provider.dart';
 import 'package:flype/routes/config_go_router.dart';
 import 'package:flype/widgets/button_custom.dart';
@@ -25,6 +27,7 @@ class AddStoryPage extends StatefulWidget {
 class _AddStoryPageState extends State<AddStoryPage> {
   final TextEditingController descriptionController =
       TextEditingController(text: '');
+
   @override
   void dispose() {
     descriptionController.dispose();
@@ -35,6 +38,9 @@ class _AddStoryPageState extends State<AddStoryPage> {
   Widget build(BuildContext context) {
     final selectedLocationProvider = Provider.of<AddStoryProvider>(context);
     final selectedLocation = selectedLocationProvider.selectedLocation;
+
+    /// Flavor
+    FlavorType flavor = FlavorConfig.instance.flavor;
 
     return Scaffold(
       appBar: AppBar(
@@ -79,15 +85,94 @@ class _AddStoryPageState extends State<AddStoryPage> {
                 ],
               ),
             ),
-            selectedLocation != null
-                ? ElevatedButton(
-                    onPressed: () => context.go('/navBar/addStory/maps'),
-                    child: Text('$selectedLocation'),
-                  )
-                : ElevatedButton(
-                    onPressed: () => context.go('/navBar/addStory/maps'),
-                    child: Text(AppLocalizations.of(context)!.addLocation),
+            if (flavor == FlavorType.free)
+              ElevatedButton(
+                onPressed: () {
+                  // Show payment popup
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Upgrade to Premium"),
+                        content: const Text(
+                            "To access add location, please upgrade to premium."),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Upgrade"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              // Close the dialog
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Cancel"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: const Text("Unlock Feature"),
+              )
+            else if (flavor == FlavorType.paid)
+              selectedLocation != null
+                  ? ElevatedButton(
+                      onPressed: () => context.go('/navBar/addStory/maps'),
+                      child: Text('$selectedLocation'),
+                    )
+                  : ElevatedButton(
+                      onPressed: () => context.go('/navBar/addStory/maps'),
+                      child: Text(AppLocalizations.of(context)!.addLocation),
+                    )
+            else
+              Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Show payment popup
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Upgrade to Premium"),
+                            content: const Text(
+                                "To access add location, please upgrade to premium."),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("Upgrade"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: const Text("Unlock Feature"),
                   ),
+                  selectedLocation != null
+                      ? ElevatedButton(
+                          onPressed: () => context.go('/navBar/addStory/maps'),
+                          child: Text('$selectedLocation'),
+                        )
+                      : ElevatedButton(
+                          onPressed: () => context.go('/navBar/addStory/maps'),
+                          child:
+                              Text(AppLocalizations.of(context)!.addLocation),
+                        ),
+                ],
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
               child: Column(
@@ -137,6 +222,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
     final uploadProvider = context.read<UploadProvider>();
     final addStoryProvider = context.read<AddStoryProvider>();
     final latLng = context.read<AddStoryProvider>().selectedLocation;
+    final refresh = context.read<StoryProvider>().refresh();
 
     final imagePath = addStoryProvider.imagePath;
     final imageFile = addStoryProvider.imageFile;
@@ -173,15 +259,15 @@ class _AddStoryPageState extends State<AddStoryPage> {
     if (uploadProvider.uploadResponse != null) {
       addStoryProvider.setImageFile(null);
       addStoryProvider.setImagePath(null);
-      addStoryProvider.setSelectedLocation(null, null);
+      addStoryProvider.selectedLocation = null;
       descriptionController.clear();
+      goRouter.replace('/navBar'); 
+      refresh;
     }
 
     scaffoldMessengerState.showSnackBar(
       SnackBar(content: Text(uploadProvider.message)),
     );
-
-    goRouter.replace('/navBar');
   }
 
   _onGalleryView() async {
@@ -227,6 +313,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
     final provider = context.read<AddStoryProvider>();
     provider.setImageFile(null);
     provider.setImagePath(null);
+    provider.selectedLocation = null;
     descriptionController.clear();
   }
 

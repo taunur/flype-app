@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flype/animations/loader_animation.dart';
-import 'package:flype/common/export.dart';
+import 'package:flype/config/flavor_config.dart';
 import 'package:flype/data/provider/auth_provider.dart';
 import 'package:flype/data/provider/story_provider.dart';
 import 'package:flype/data/utils/result_state.dart';
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          AppLocalizations.of(context)!.titleAppBar,
+          FlavorConfig.instance.values.titleApp,
         ),
         centerTitle: true,
       ),

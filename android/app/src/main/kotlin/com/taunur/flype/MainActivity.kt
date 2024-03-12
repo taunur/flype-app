@@ -1,4 +1,4 @@
-package com.example.flype
+package com.taunur.flype
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flype/config/flavor_config.dart';
 import 'package:flype/data/api/add_story_service.dart';
 import 'package:flype/data/db/auth_repository.dart';
 import 'package:flype/data/provider/add_story_provider.dart';
@@ -20,6 +21,13 @@ void main() async {
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
   initializeDateFormatting('id_ID', null);
+
+  FlavorConfig(
+    flavor: FlavorType.paid,
+    values: const FlavorValues(
+      titleApp: "FLYPE Paid",
+    ),
+  );
 
   runApp(
     MultiProvider(
