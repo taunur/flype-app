@@ -246,11 +246,6 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
         ),
 
         const SizedBox(height: 6),
-
-        /// Tampilkan lokasi (latitude dan longitude)
-        // Text(
-        //   '${AppLocalizations.of(context)!.location} ${detailStory.lat ?? ''}, ${detailStory.lon ?? ''}',
-        // ),
       ],
     ),
   );

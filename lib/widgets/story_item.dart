@@ -145,7 +145,7 @@ class _StoryListItemState extends State<StoryListItem> {
                       },
                       child: Text(
                         _expanded ? 'Show less' : 'Read more',
-                        style: const TextStyle(color: AppColor.variantBlue),
+                        style: const TextStyle(color: AppColor.blue),
                       ),
                     ),
                   Text(

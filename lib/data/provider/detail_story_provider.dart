@@ -47,7 +47,7 @@ class DetailStoryProvider extends ChangeNotifier {
       _state = ResultState.hasData;
     } catch (e) {
       _state = ResultState.error;
-      _message = 'Failed to load stories. Check your connection.';
+      _message = 'Failed to load stories.';
       logger.e('Error loading stories: $e');
     } finally {
       notifyListeners();
@@ -69,10 +69,5 @@ class DetailStoryProvider extends ChangeNotifier {
   void setLongitude(double longitude) {
     _longitude = longitude;
     notifyListeners();
-  }
-
-  void setSelectedLocation(double latitude, double longitude) {
-    setLatitude(latitude);
-    setLongitude(longitude);
   }
 }

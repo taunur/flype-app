@@ -74,7 +74,7 @@ class StoryProvider extends ChangeNotifier {
       }
     } catch (e) {
       _state = ResultState.error;
-      _message = 'Failed to load stories. Check your connection.';
+      _message = 'Failed to load stories.';
       logger.e('Error loading stories: $e');
     } finally {
       notifyListeners();

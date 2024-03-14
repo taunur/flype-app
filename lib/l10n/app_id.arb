@@ -31,5 +31,6 @@
   "darkTheme": "Tema Gelap",
   "lightTheme": "Tema Terang",
   "changeLanguage": "Ubah Bahasa",
-  "logout": "Keluar"
+  "logout": "Keluar",
+  "mapStory": "Peta Cerita"
 }

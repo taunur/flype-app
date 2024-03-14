@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flype/common/app_color.dart';
+import 'package:flype/common/export.dart';
 import 'package:flype/data/provider/detail_story_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ class _DetailMapPageState extends State<DetailMapPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Map Story ${detailStoryProvider.detailStory!.story.name}',
+          '${AppLocalizations.of(context)!.mapStory} ${detailStoryProvider.detailStory!.story.name}',
           overflow: TextOverflow.ellipsis,
         ),
       ),

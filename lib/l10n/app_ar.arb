@@ -31,5 +31,6 @@
   "darkTheme": "موضوع الظلام",
   "lightTheme": "موضوع الضوء",
   "changeLanguage": "تغيير اللغة",
-  "logout": "تسجيل خروج"
+  "logout": "تسجيل خروج",
+  "mapStory": "قصه الخريطه"
 }

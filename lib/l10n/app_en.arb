@@ -31,5 +31,6 @@
   "darkTheme": "Dark Theme",
   "lightTheme": "Light Theme",
   "changeLanguage": "Change Language",
-  "logout": "Logout"
+  "logout": "Logout",
+  "mapStory": "Story Map"
 }
