@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 
 class DetailStoryProvider extends ChangeNotifier {
   final Logger logger = Logger();
-  late String _token; 
+  late String _token;
 
   final AuthRepository _authRepository = AuthRepository();
 
@@ -26,6 +26,12 @@ class DetailStoryProvider extends ChangeNotifier {
   String get message => _message;
 
   ResultState get state => _state;
+
+  double _latitude = 0.0;
+  double _longitude = 0.0;
+
+  double get latitude => _latitude;
+  double get longitude => _longitude;
 
   Future<void> _getDetailStory(String id) async {
     try {
@@ -53,5 +59,20 @@ class DetailStoryProvider extends ChangeNotifier {
     String token,
   ) async {
     await _getDetailStory(id);
+  }
+
+  void setLatitude(double latitude) {
+    _latitude = latitude;
+    notifyListeners();
+  }
+
+  void setLongitude(double longitude) {
+    _longitude = longitude;
+    notifyListeners();
+  }
+
+  void setSelectedLocation(double latitude, double longitude) {
+    setLatitude(latitude);
+    setLongitude(longitude);
   }
 }

@@ -8,7 +8,9 @@ import 'package:flype/data/model/detail_story_model.dart';
 import 'package:flype/data/provider/auth_provider.dart';
 import 'package:flype/data/provider/detail_story_provider.dart';
 import 'package:flype/data/utils/result_state.dart';
+import 'package:flype/routes/config_go_router.dart';
 import 'package:flype/widgets/error_widget.dart';
+import 'package:geocoding/geocoding.dart';
 import 'dart:math' as math;
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -130,7 +132,6 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircleAvatar(
               backgroundColor: Colors.primaries[Random().nextInt(
@@ -146,6 +147,7 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
                 textAlign: TextAlign.center,
               ),
             ),
+            const SizedBox(width: 10),
             Text(
               detailStory.name,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -155,6 +157,46 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
             ),
           ],
         ),
+
+        /// Tampilkan lokasi (latitude dan longitude)
+        if (detailStory.lat != null && detailStory.lon != null)
+          FutureBuilder<List<Placemark>>(
+            future:
+                placemarkFromCoordinates(detailStory.lat!, detailStory.lon!),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else if (snapshot.hasData) {
+                final placemarks = snapshot.data!;
+                if (placemarks.isNotEmpty) {
+                  final firstPlacemark = placemarks.first;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: InkWell(
+                      onTap: () {
+                        final locationProvider =
+                            Provider.of<DetailStoryProvider>(context,
+                                listen: false);
+                        locationProvider.setLatitude(detailStory.lat!);
+                        locationProvider.setLongitude(detailStory.lon!);
+                        goRouter.go('/navBar/stories/:id/detailsMaps');
+                      },
+                      child: Text(
+                        '${AppLocalizations.of(context)!.location} ${firstPlacemark.street}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  );
+                } else {
+                  return const Text('No placemarks found');
+                }
+              } else {
+                return const Text('No data available');
+              }
+            },
+          ),
 
         /// Tampilkan gambar jika photoUrl tidak null
         Container(
@@ -206,9 +248,9 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
         const SizedBox(height: 6),
 
         /// Tampilkan lokasi (latitude dan longitude)
-        Text(
-          '${AppLocalizations.of(context)!.location} ${detailStory.lat ?? ''}, ${detailStory.lon ?? ''}',
-        ),
+        // Text(
+        //   '${AppLocalizations.of(context)!.location} ${detailStory.lat ?? ''}, ${detailStory.lon ?? ''}',
+        // ),
       ],
     ),
   );
