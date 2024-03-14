@@ -273,25 +273,26 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
                           child: GoogleMap(
                             initialCameraPosition: CameraPosition(
                               target: LatLng(
-                                  detailStory.lat ?? 0, detailStory.lon ?? 0),
+                                detailStory.lat ?? 0,
+                                detailStory.lon ?? 0,
+                              ),
                               zoom: 15,
                             ),
                             markers: {
                               Marker(
-                                markerId:
-                                    const MarkerId('detail_location_marker'),
+                                markerId: const MarkerId(
+                                  'detail_location_marker',
+                                ),
                                 position: LatLng(
                                   detailStory.lat ?? 0,
                                   detailStory.lon ?? 0,
                                 ),
+                                onTap: () {
+                                  _showAddressDialog(context, firstPlacemark);
+                                },
                               ),
                             },
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          '${AppLocalizations.of(context)!.address}: ${firstPlacemark.street ?? ''}, ${firstPlacemark.subLocality ?? ''}, ${firstPlacemark.locality ?? ''}, ${firstPlacemark.postalCode ?? ''}, ${firstPlacemark.country ?? ''}',
-                          style: const TextStyle(fontSize: 14),
                         ),
                       ],
                     );
@@ -306,5 +307,28 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
           ),
       ],
     ),
+  );
+}
+
+// Fungsi untuk menampilkan dialog dengan alamat lengkap
+void _showAddressDialog(BuildContext context, Placemark placemark) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(AppLocalizations.of(context)!.address),
+        content: Text(
+          '${placemark.street ?? ''}, ${placemark.subLocality ?? ''}, ${placemark.locality ?? ''}, ${placemark.postalCode ?? ''}, ${placemark.country ?? ''}',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('Tutup'),
+          ),
+        ],
+      );
+    },
   );
 }
