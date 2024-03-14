@@ -4,6 +4,7 @@ import 'package:flype/config/flavor_config.dart';
 import 'package:flype/data/provider/auth_provider.dart';
 import 'package:flype/data/provider/story_provider.dart';
 import 'package:flype/data/utils/result_state.dart';
+import 'package:flype/pages/no_connection.dart';
 import 'package:flype/widgets/error_widget.dart';
 import 'package:flype/widgets/loading_widget.dart';
 import 'package:flype/widgets/story_item.dart';
@@ -121,6 +122,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 },
               );
             } else if (stories.state == ResultState.noData) {
+              return ErrorMessageWidget(message: stories.message);
+            } else if (stories.state == ResultState.noConnection) {
+              return NoConnectionPage(
+                onReload: () => context.read<StoryProvider>().refresh(),
+              );
+            } else if (stories.state == ResultState.error) {
               return ErrorMessageWidget(message: stories.message);
             } else {
               return const SizedBox.shrink();

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flype/data/provider/story_provider.dart';
+import 'package:provider/provider.dart';
 
 class NoConnectionPage extends StatelessWidget {
   final VoidCallback onReload;
@@ -24,10 +26,12 @@ class NoConnectionPage extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Please check your internet connection and try again.',
-              textAlign: TextAlign.center,
-            ),
+            Consumer<StoryProvider>(builder: (context, stories, _) {
+              return Text(
+                stories.message,
+                textAlign: TextAlign.center,
+              );
+            }),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: onReload,

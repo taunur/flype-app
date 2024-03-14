@@ -124,7 +124,19 @@ class _AddStoryPageState extends State<AddStoryPage> {
                       child: Text('$selectedLocation'),
                     )
                   : ElevatedButton(
-                      onPressed: () => context.go('/navBar/addStory/maps'),
+                      onPressed: () async {
+                        final isConnected = await selectedLocationProvider
+                            .checkInternetConnection();
+                        if (!context.mounted) return;
+                        if (!isConnected) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("No Internet Connection")),
+                          );
+                          return;
+                        }
+                        context.go('/navBar/addStory/maps');
+                      },
                       child: Text(AppLocalizations.of(context)!.addLocation),
                     )
             else
@@ -167,7 +179,19 @@ class _AddStoryPageState extends State<AddStoryPage> {
                           child: Text('$selectedLocation'),
                         )
                       : ElevatedButton(
-                          onPressed: () => context.go('/navBar/addStory/maps'),
+                          onPressed: () async {
+                            final isConnected = await selectedLocationProvider
+                                .checkInternetConnection();
+                            if (!context.mounted) return;
+                            if (!isConnected) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("No Internet Connection")),
+                              );
+                              return;
+                            }
+                            context.go('/navBar/addStory/maps');
+                          },
                           child:
                               Text(AppLocalizations.of(context)!.addLocation),
                         ),
@@ -222,6 +246,14 @@ class _AddStoryPageState extends State<AddStoryPage> {
     final uploadProvider = context.read<UploadProvider>();
     final addStoryProvider = context.read<AddStoryProvider>();
     final latLng = context.read<AddStoryProvider>().selectedLocation;
+    final isConnected = await addStoryProvider.checkInternetConnection();
+
+    if (!isConnected) {
+      scaffoldMessengerState.showSnackBar(
+        const SnackBar(content: Text("No Internet Connection")),
+      );
+      return;
+    }
 
     final imagePath = addStoryProvider.imagePath;
     final imageFile = addStoryProvider.imageFile;

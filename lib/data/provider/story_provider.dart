@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flype/data/api/connection_services.dart';
 import 'package:flype/data/api/story_service.dart';
 import 'package:flype/data/db/auth_repository.dart';
 import 'package:flype/data/model/list_story_model.dart';
@@ -36,6 +37,15 @@ class StoryProvider extends ChangeNotifier {
         _state = ResultState.loading;
         _message = '';
         notifyListeners();
+      }
+
+      /// Memeriksa koneksi internet sebelum memanggil layanan untuk mengambil cerita
+      final isConnected = await ConnectionServices().isInternetAvailable();
+      if (!isConnected) {
+        _state = ResultState.noConnection;
+        _message = 'No Internet Connection';
+        notifyListeners();
+        return;
       }
 
       /// Mengambil token dari AuthRepository
