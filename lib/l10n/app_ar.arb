@@ -32,5 +32,6 @@
   "lightTheme": "موضوع الضوء",
   "changeLanguage": "تغيير اللغة",
   "logout": "تسجيل خروج",
-  "mapStory": "قصه الخريطه"
+  "mapStory": "قصه الخريطه",
+  "address": "عنوان"
 }

@@ -13,6 +13,7 @@ import 'package:flype/widgets/error_widget.dart';
 import 'package:geocoding/geocoding.dart';
 import 'dart:math' as math;
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -246,6 +247,63 @@ Widget _buildDetails(BuildContext context, DetailStory detailStory) {
         ),
 
         const SizedBox(height: 6),
+
+        /// Tampilkan peta berdasarkan latitude dan longitude serta alamat lengkapnya
+        if (detailStory.lat != null && detailStory.lon != null)
+          Container(
+            height: 300, // Fixed height for the map
+            margin: const EdgeInsets.only(top: 10),
+            child: FutureBuilder<List<Placemark>>(
+              future: placemarkFromCoordinates(
+                  detailStory.lat ?? 0, detailStory.lon ?? 0),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (snapshot.hasData) {
+                  final placemarks = snapshot.data!;
+                  if (placemarks.isNotEmpty) {
+                    final firstPlacemark = placemarks.first;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 200, // Height for the map
+                          child: GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(
+                                  detailStory.lat ?? 0, detailStory.lon ?? 0),
+                              zoom: 15,
+                            ),
+                            markers: {
+                              Marker(
+                                markerId:
+                                    const MarkerId('detail_location_marker'),
+                                position: LatLng(
+                                  detailStory.lat ?? 0,
+                                  detailStory.lon ?? 0,
+                                ),
+                              ),
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          '${AppLocalizations.of(context)!.address}: ${firstPlacemark.street ?? ''}, ${firstPlacemark.subLocality ?? ''}, ${firstPlacemark.locality ?? ''}, ${firstPlacemark.postalCode ?? ''}, ${firstPlacemark.country ?? ''}',
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const Text('No placemarks found');
+                  }
+                } else {
+                  return const Text('No data available');
+                }
+              },
+            ),
+          ),
       ],
     ),
   );

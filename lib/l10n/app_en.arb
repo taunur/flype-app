@@ -32,5 +32,6 @@
   "lightTheme": "Light Theme",
   "changeLanguage": "Change Language",
   "logout": "Logout",
-  "mapStory": "Story Map"
+  "mapStory": "Story Map",
+  "address": "Address"
 }
