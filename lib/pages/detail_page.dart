@@ -325,7 +325,7 @@ void _showAddressDialog(BuildContext context, Placemark placemark) {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: const Text('Tutup'),
+            child: const Text('Close'),
           ),
         ],
       );

@@ -16,7 +16,7 @@ class NoConnectionPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
-              Icons.signal_wifi_off,
+              Icons.signal_cellular_off,
               size: 64,
               color: Colors.grey,
             ),
